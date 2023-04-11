@@ -14,13 +14,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     
-    steps:
-      - uses: actions/checkout@v2
-      
-    
-      - name: Install Azure CLI
-        uses: azure/CLI@v1
-
+    steps: 
       - name: Move artifact to Azure Blob Storage
         run: |
           azcopy copy ./build 'https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ env.AZURE_STORAGE_CONTAINER }}?${{ env.AZURE_STORAGE_ACCESS_KEY }}' --recursive
