@@ -1,0 +1,26 @@
+name: Move Build Artifact to Azure Blob Storage
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_STORAGE_ACCOUNT: <your-storage-account-name>
+  AZURE_STORAGE_CONTAINER: <your-container-name>
+  AZURE_STORAGE_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+    
+      - name: Install Azure CLI
+        uses: azure/CLI@v1
+
+      - name: Move artifact to Azure Blob Storage
+        run: |
+          azcopy copy ./build 'https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ env.AZURE_STORAGE_CONTAINER }}?${{ env.AZURE_STORAGE_ACCESS_KEY }}' --recursive
